@@ -1,4 +1,4 @@
-import axios from "axios"
+import { api } from "@/lib/apiClient"
 import type React from "react"
 import { useEffect, useState } from "react"
 
@@ -8,8 +8,8 @@ const BackendCheck: React.FC<{ children: React.ReactElement }> = ({
   const [active, setActive] = useState(false)
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5228/health")
+    api
+      .get("/health")
       .then(() => setActive(true))
       .catch(console.log)
   }, [])
