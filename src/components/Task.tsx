@@ -1,10 +1,10 @@
 import type React from "react"
 import type { TaskT } from "types/task"
-import { TrashIcon, CheckIcon } from "lucide-react"
-import { Toggle } from "./ui/toggle"
+import { TrashIcon } from "lucide-react"
 import { Button } from "./ui/button"
 import axios from "axios"
 import { cn } from "@/lib/utils"
+import { Checkbox } from "./ui/checkbox"
 
 const Task: React.FC<{ task: TaskT; getTasks: () => Promise<void> }> = ({
   task,
@@ -21,6 +21,19 @@ const Task: React.FC<{ task: TaskT; getTasks: () => Promise<void> }> = ({
       </span>
 
       <div className="flex items-center gap-2">
+        <Checkbox
+          className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
+          checked={task.isCompleted}
+          onClick={() => {
+            axios
+              .put(`http://localhost:5228/api/tasks/${task.id}`, {
+                isCompleted: !task.isCompleted,
+              })
+              .then(() => getTasks())
+              .catch(console.log)
+          }}
+        />
+
         <Button
           size="icon"
           variant="ghost"
@@ -33,21 +46,6 @@ const Task: React.FC<{ task: TaskT; getTasks: () => Promise<void> }> = ({
         >
           <TrashIcon />
         </Button>
-
-        <Toggle
-          pressed={task.isCompleted}
-          onClick={() => {
-            axios
-              .put(`http://localhost:5228/api/tasks/${task.id}`, {
-                isCompleted: !task.isCompleted,
-              })
-              .then(() => getTasks())
-              .catch(console.log)
-          }}
-          size="sm"
-        >
-          <CheckIcon />
-        </Toggle>
       </div>
     </div>
   )
