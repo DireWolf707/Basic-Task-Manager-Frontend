@@ -1,8 +1,8 @@
 import { Textarea } from "./ui/textarea"
 import { Button } from "./ui/button"
 import { useState } from "react"
-import axios from "axios"
 import type { TaskT } from "types/task"
+import { api } from "@/lib/apiClient"
 
 const TaskInput: React.FC<{
   getTasks: () => Promise<void>
@@ -10,8 +10,8 @@ const TaskInput: React.FC<{
   const [description, setDescription] = useState("")
 
   const onSumbit = () => {
-    axios
-      .post<TaskT>("http://localhost:5228/api/tasks", {
+    api
+      .post<TaskT>("/api/tasks", {
         description,
       })
       .then(() => setDescription(""))

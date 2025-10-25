@@ -1,4 +1,4 @@
-import axios from "axios"
+import { api } from "./lib/apiClient"
 import { useCallback, useEffect, useState } from "react"
 import type { TaskT } from "../types/task"
 import TaskInput from "./components/TaskInput"
@@ -10,8 +10,8 @@ const App = () => {
 
   const getTasks = useCallback(
     () =>
-      axios
-        .get<TaskT[]>("http://localhost:5228/api/tasks")
+      api
+        .get<TaskT[]>("/api/tasks")
         .then((res) => setTasks(res.data))
         .catch((error) => console.error("Error fetching tasks:", error)),
     []

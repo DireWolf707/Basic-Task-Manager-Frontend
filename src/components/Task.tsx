@@ -2,9 +2,9 @@ import type React from "react"
 import type { TaskT } from "types/task"
 import { TrashIcon } from "lucide-react"
 import { Button } from "./ui/button"
-import axios from "axios"
 import { cn } from "@/lib/utils"
 import { Checkbox } from "./ui/checkbox"
+import { api } from "@/lib/apiClient"
 
 const Task: React.FC<{ task: TaskT; getTasks: () => Promise<void> }> = ({
   task,
@@ -25,8 +25,8 @@ const Task: React.FC<{ task: TaskT; getTasks: () => Promise<void> }> = ({
           className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
           checked={task.isCompleted}
           onClick={() => {
-            axios
-              .put(`http://localhost:5228/api/tasks/${task.id}`, {
+            api
+              .put(`/api/tasks/${task.id}`, {
                 isCompleted: !task.isCompleted,
               })
               .then(() => getTasks())
@@ -38,8 +38,8 @@ const Task: React.FC<{ task: TaskT; getTasks: () => Promise<void> }> = ({
           size="icon"
           variant="ghost"
           onClick={() =>
-            axios
-              .delete(`http://localhost:5228/api/tasks/${task.id}`)
+            api
+              .delete(`/api/tasks/${task.id}`)
               .then(() => getTasks())
               .catch(console.log)
           }
